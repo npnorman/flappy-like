@@ -1,0 +1,12 @@
+[gd_scene format=3 uid="uid://bqaenx2assr6c"]
+
+[ext_resource type="Script" uid="uid://dvvgpqo3b33yg" path="res://scripts/pipe_generator.gd" id="1_tsb1m"]
+[ext_resource type="PackedScene" uid="uid://dlsw5f4njvw3t" path="res://scenes/pipe.tscn" id="2_b3l2j"]
+
+[node name="pipeGenerator" type="Node2D" unique_id=691690820]
+script = ExtResource("1_tsb1m")
+pipe = ExtResource("2_b3l2j")
+
+[node name="pipeSpawnTimer" type="Timer" parent="." unique_id=292404404]
+
+[connection signal="timeout" from="pipeSpawnTimer" to="." method="_on_pipe_spawn_timer_timeout"]

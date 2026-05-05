@@ -1,10 +1,18 @@
 [gd_scene format=3 uid="uid://ddgave1xkomtu"]
 
 [ext_resource type="PackedScene" uid="uid://caraft7ssq3iw" path="res://scenes/flappy_bird.tscn" id="1_uwrxv"]
+[ext_resource type="PackedScene" uid="uid://bqaenx2assr6c" path="res://scenes/pipe_generator.tscn" id="2_yqjtg"]
 
 [node name="game" type="Node2D" unique_id=1363176285]
 
+[node name="Camera2D" type="Camera2D" parent="." unique_id=1494758021]
+offset = Vector2(240, 300)
+
 [node name="flappyBird" parent="." unique_id=1805933600 instance=ExtResource("1_uwrxv")]
-position = Vector2(233, 278)
+position = Vector2(80, 280)
 scale = Vector2(2, 2)
 flap_height = 300.0
+
+[node name="pipeGenerator" parent="." unique_id=691690820 node_paths=PackedStringArray("camera") instance=ExtResource("2_yqjtg")]
+camera = NodePath("../Camera2D")
+gap = 200.0
