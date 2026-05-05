@@ -5,53 +5,43 @@ extends Node2D
 @onready var pipe_spawn_timer: Timer = $pipeSpawnTimer
 
 @export var camera : Camera2D
-@export var pipe : PackedScene
+@export var pipe_scene : PackedScene
 @export var gap : float = 150
 @export var speed : float = 100
 
-var pipe_pairs = [] # list of pipe pairs
+var pipe_pairs : Array[PipePair] = [] # list of pipe pairs
 
-func generate_pipe_pair():
-	# generate 2 pipes
-	# get the middle of the screen and generate a pipe
+func get_random_height():
+	
+	var rng = RandomNumberGenerator.new()
+	var random_height = rng.randf_range(
+		-get_viewport_rect().size.x/2 + 100,
+		get_viewport_rect().size.x/2 - 100)
+	
+	return random_height
+
+func initialize_pipe_pair(gap, speed):
 	var screen_center : Vector2 = camera.get_screen_center_position()
 	var screen_width : float = get_viewport_rect().size.x
 	
-	var initial_position : Vector2 = screen_center
-	initial_position.x += (screen_width / 2) + 50 # offset to go a little beyond half way
-
-	# spawn in a pipe at this position
-	var top_pipe : Node2D = pipe.instantiate()
-	add_child(top_pipe)
-	top_pipe.position = initial_position
+	var height = get_random_height()
 	
-	var bottom_pipe : Node2D = pipe.instantiate()
-	add_child(bottom_pipe)
-	bottom_pipe.position = initial_position
-	bottom_pipe.rotation_degrees = 180
-	bottom_pipe.flip_sprites()
-	
-	return [top_pipe, bottom_pipe]
-
-func set_gap(gap:float, pipe_pair):
-	pipe_pair[0].position.y -= gap / 2
-	pipe_pair[1].position.y += gap / 2
-
-func move_pipes(speed:float, pipe_pair):
-	pipe_pair[0].position.x -= speed
-	pipe_pair[1].position.x -= speed
+	var new_pair : PipePair = PipePair.new(self, screen_center, screen_width, gap, speed, height)
+	pipe_pairs.append(new_pair)
 
 func _ready() -> void:
-	pipe_pairs.append(generate_pipe_pair())
-	set_gap(gap, pipe_pairs[0])
-	
+	initialize_pipe_pair(gap, speed)
 	pipe_spawn_timer.start()
 
 func _process(delta: float) -> void:
 	# for each pipe pair
-	for pipe_pair in pipe_pairs:
-		move_pipes(speed * delta, pipe_pair)
+	for i in range(0, len(pipe_pairs)):
+		pipe_pairs[i].move_pipe(delta)
+	
+	# get rid of first one
+	if pipe_pairs[0].get_position().x <= 0 - 50:
+		pipe_pairs[0].custom_free()
+		pipe_pairs.remove_at(0)
 
 func _on_pipe_spawn_timer_timeout() -> void:
-	pipe_pairs.append(generate_pipe_pair())
-	set_gap(gap, pipe_pairs[-1])
+	initialize_pipe_pair(gap, speed)

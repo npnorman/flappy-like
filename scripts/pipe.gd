@@ -1,4 +1,5 @@
 extends Node2D
+class_name Pipe
 
 @onready var stalk: Sprite2D = $stalk
 @onready var end: Sprite2D = $end
