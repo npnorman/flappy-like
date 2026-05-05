@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://caraft7ssq3iw"]
+
+[ext_resource type="Texture2D" uid="uid://bo6415wiwga3h" path="res://sprites/flappy-bird.png" id="1_cmusi"]
+
+[node name="flappyBird" type="Node2D" unique_id=1805933600]
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=2008263987]
+texture = ExtResource("1_cmusi")
