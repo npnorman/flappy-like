@@ -19,5 +19,5 @@ camera = NodePath("../Camera2D")
 gap = 200.0
 
 [node name="Ground" parent="." unique_id=263583289 instance=ExtResource("3_lnu2h")]
-position = Vector2(195, 536)
+position = Vector2(-7, 550)
 scale = Vector2(2, 2)
